@@ -11,6 +11,7 @@ import edu.ncsu.csc316.dsa.list.List;
 import edu.ncsu.csc316.dsa.map.Map;
 import edu.ncsu.csc316.trail.data.Landmark;
 import edu.ncsu.csc316.trail.data.Trail;
+import edu.ncsu.csc316.trail.dsa.Algorithm;
 import edu.ncsu.csc316.trail.dsa.DSAFactory;
 import edu.ncsu.csc316.trail.dsa.DataStructure;
 
@@ -31,7 +32,11 @@ public class TrailManagerTest {
      */
     @Before
     public void setUp() throws FileNotFoundException {
+    	DSAFactory.setListType(DataStructure.ARRAYBASEDLIST);
         manager = new TrailManager("input/landmarks_sample.csv", "input/trails_sample.csv");
+        DSAFactory.setListType(DataStructure.SINGLYLINKEDLIST);
+        DSAFactory.setMapType(DataStructure.SEARCHTABLE); 
+        DSAFactory.setNonComparisonSorterType(Algorithm.RADIX_SORT);
     }
     /**
      * Tests getDistancesToDestination method
@@ -240,48 +245,48 @@ public class TrailManagerTest {
 		assertEquals(1, map.size());
 		List<Trail> trails = map.get(manager.getLandmarkByID("L01"));
 		
-		assertEquals(1179, trails.get(0).getLength());
+		assertEquals(3013, trails.get(0).getLength());
 		assertEquals(1046, trails.get(1).getLength());
-		assertEquals(3013, trails.get(2).getLength());
+		assertEquals(1179, trails.get(2).getLength());
 		
 		//Check locations with 2 minimum trails.
 		map = manager.getProposedFirstAidLocations(2);
 		assertEquals(7, map.size());
 		trails = map.get(manager.getLandmarkByID("L01"));
 		assertEquals(3, trails.size());
-		assertEquals(1179, trails.get(0).getLength());
+		assertEquals(3013, trails.get(0).getLength());
 		assertEquals(1046, trails.get(1).getLength());
-		assertEquals(3013, trails.get(2).getLength());
+		assertEquals(1179, trails.get(2).getLength());
 		
 		trails = map.get(manager.getLandmarkByID("L02"));
 		assertEquals(2, trails.size());
-		assertEquals(3613, trails.get(0).getLength());
-		assertEquals(3013, trails.get(1).getLength());
+		assertEquals(3013, trails.get(0).getLength());
+		assertEquals(3613, trails.get(1).getLength());
 		
 		trails = map.get(manager.getLandmarkByID("L04"));
 		assertEquals(2, trails.size());
-		assertEquals(2311, trails.get(0).getLength());
-		assertEquals(1179, trails.get(1).getLength());
+		assertEquals(1179, trails.get(0).getLength());
+		assertEquals(2311, trails.get(1).getLength());
 		
 		trails = map.get(manager.getLandmarkByID("L05"));
 		assertEquals(2, trails.size());
-		assertEquals(1039, trails.get(0).getLength());
-		assertEquals(4204, trails.get(1).getLength());
+		assertEquals(4204, trails.get(0).getLength());
+		assertEquals(1039, trails.get(1).getLength());
 		
 		trails = map.get(manager.getLandmarkByID("L07"));
 		assertEquals(2, trails.size());
-		assertEquals(1891, trails.get(0).getLength());
-		assertEquals(2912, trails.get(1).getLength());
+		assertEquals(2912, trails.get(0).getLength());
+		assertEquals(1891, trails.get(1).getLength());
 		
 		trails = map.get(manager.getLandmarkByID("L06"));
 		assertEquals(2, trails.size());
-		assertEquals(2912, trails.get(0).getLength());
-		assertEquals(1039, trails.get(1).getLength());
+		assertEquals(1039, trails.get(0).getLength());
+		assertEquals(2912, trails.get(1).getLength());
 		
 		trails = map.get(manager.getLandmarkByID("L03"));
 		assertEquals(2, trails.size());
-		assertEquals(4204, trails.get(0).getLength());
-		assertEquals(1046, trails.get(1).getLength());
+		assertEquals(1046, trails.get(0).getLength());
+		assertEquals(4204, trails.get(1).getLength());
 		
 		//Check locations with one trail
 		
@@ -289,39 +294,39 @@ public class TrailManagerTest {
 		assertEquals(12, map.size());
 		trails = map.get(manager.getLandmarkByID("L01"));
 		assertEquals(3, trails.size());
-		assertEquals(1179, trails.get(0).getLength());
+		assertEquals(3013, trails.get(0).getLength());
 		assertEquals(1046, trails.get(1).getLength());
-		assertEquals(3013, trails.get(2).getLength());
+		assertEquals(1179, trails.get(2).getLength());
 		
 		trails = map.get(manager.getLandmarkByID("L02"));
 		assertEquals(2, trails.size());
-		assertEquals(3613, trails.get(0).getLength());
-		assertEquals(3013, trails.get(1).getLength());
+		assertEquals(3013, trails.get(0).getLength());
+		assertEquals(3613, trails.get(1).getLength());
 		
 		trails = map.get(manager.getLandmarkByID("L04"));
 		assertEquals(2, trails.size());
-		assertEquals(2311, trails.get(0).getLength());
-		assertEquals(1179, trails.get(1).getLength());
+		assertEquals(1179, trails.get(0).getLength());
+		assertEquals(2311, trails.get(1).getLength());
 		
 		trails = map.get(manager.getLandmarkByID("L05"));
 		assertEquals(2, trails.size());
-		assertEquals(1039, trails.get(0).getLength());
-		assertEquals(4204, trails.get(1).getLength());
+		assertEquals(4204, trails.get(0).getLength());
+		assertEquals(1039, trails.get(1).getLength());
 		
 		trails = map.get(manager.getLandmarkByID("L07"));
 		assertEquals(2, trails.size());
-		assertEquals(1891, trails.get(0).getLength());
-		assertEquals(2912, trails.get(1).getLength());
+		assertEquals(2912, trails.get(0).getLength());
+		assertEquals(1891, trails.get(1).getLength());
 		
 		trails = map.get(manager.getLandmarkByID("L06"));
 		assertEquals(2, trails.size());
-		assertEquals(2912, trails.get(0).getLength());
-		assertEquals(1039, trails.get(1).getLength());
+		assertEquals(1039, trails.get(0).getLength());
+		assertEquals(2912, trails.get(1).getLength());
 		
 		trails = map.get(manager.getLandmarkByID("L03"));
 		assertEquals(2, trails.size());
-		assertEquals(4204, trails.get(0).getLength());
-		assertEquals(1046, trails.get(1).getLength());
+		assertEquals(1046, trails.get(0).getLength());
+		assertEquals(4204, trails.get(1).getLength());
 		
 		trails = map.get(manager.getLandmarkByID("L11"));
 		assertEquals(1, trails.size());

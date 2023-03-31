@@ -6,6 +6,7 @@ import edu.ncsu.csc316.dsa.list.List;
 import edu.ncsu.csc316.dsa.map.Map;
 import edu.ncsu.csc316.trail.data.Landmark;
 import edu.ncsu.csc316.trail.data.Trail;
+import edu.ncsu.csc316.trail.dsa.Algorithm;
 import edu.ncsu.csc316.trail.dsa.DSAFactory;
 import edu.ncsu.csc316.trail.dsa.DataStructure;
 import edu.ncsu.csc316.trail.io.TrailInputReader;
@@ -30,10 +31,7 @@ public class TrailManager {
      * @throws FileNotFoundException if one of the files cannot be found
      */
     public TrailManager(String pathToLandmarkFile, String pathToTrailFile) throws FileNotFoundException {
-        DSAFactory.setListType(DataStructure.ARRAYBASEDLIST); //Array based list has best runtime for sequential search.
         landmarks = TrailInputReader.readLandmarks(pathToLandmarkFile);
-        
-        DSAFactory.setListType(DataStructure.ARRAYBASEDLIST); 
         trails = TrailInputReader.readTrails(pathToTrailFile); 
         
     }
@@ -96,12 +94,8 @@ public class TrailManager {
      * @return A map containing a list of landmarks that connect to originlandmark, and their distances.
      */
     public Map<Landmark, Integer> getDistancesToDestinations(String originLandmark) {
-
-    	DSAFactory.setMapType(DataStructure.UNORDEREDLINKEDMAP);
     	Map<Landmark, Integer> distances = DSAFactory.getMap(null);
     	
-    	
-    	DSAFactory.setListType(DataStructure.SINGLYLINKEDLIST);
     	for (int i = 0; i < landmarks.size(); i++) {
     		List<String> visited = DSAFactory.getIndexedList();
     		
@@ -141,7 +135,7 @@ public class TrailManager {
     	else if (trails.get(currentIndex).getLandmarkOne().equals(current.getId()) || trails.get(currentIndex).getLandmarkTwo().equals(current.getId())) {
     		totalFound = firstAidHelper(numFound + 1, currentIndex + 1, current, minNumTrails, currentTrails);
     		if (totalFound >= minNumTrails) {
-    			currentTrails.addLast(trails.get(currentIndex));
+    			currentTrails.addFirst(trails.get(currentIndex));
     		}
     	}
     	else {
@@ -156,8 +150,6 @@ public class TrailManager {
      * @return a map containing Landmarks and List of trails as keys and values respectively. For a Landmark, the list of intersecting trails are listed.
      */
     public Map<Landmark, List<Trail>> getProposedFirstAidLocations(int numberOfIntersectingTrails) {
-        DSAFactory.setMapType(DataStructure.SEARCHTABLE);
-        DSAFactory.setListType(DataStructure.ARRAYBASEDLIST);
     	Map<Landmark, List<Trail>> firstAidLocations = DSAFactory.getMap(null);
     	
     	for (int i = 0; i < landmarks.size(); i++) {
