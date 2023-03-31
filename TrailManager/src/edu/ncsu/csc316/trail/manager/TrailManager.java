@@ -10,10 +10,25 @@ import edu.ncsu.csc316.trail.dsa.DSAFactory;
 import edu.ncsu.csc316.trail.dsa.DataStructure;
 import edu.ncsu.csc316.trail.io.TrailInputReader;
 
+/**
+ * Class for managing trails. Finds distances to different destinations, as well as finding 
+ * potential first aid locations
+ * @author Jeremiah Knizley
+ *
+ */
 public class TrailManager {
+	/** a list of trails in the system */
     private List<Trail> trails;
+    /** A list of landmarks in the system */
     private List<Landmark> landmarks;
     
+    /**
+     * Creates a TrailManager. trails are initialized to an ArrayBasedList
+     * landmarks are initialized to an ArrayBasedList
+     * @param pathToLandmarkFile the path to the file containing landmarks
+     * @param pathToTrailFile the path to the file containing trails
+     * @throws FileNotFoundException if one of the files cannot be found
+     */
     public TrailManager(String pathToLandmarkFile, String pathToTrailFile) throws FileNotFoundException {
         DSAFactory.setListType(DataStructure.ARRAYBASEDLIST); //Array based list has best runtime for sequential search.
         landmarks = TrailInputReader.readLandmarks(pathToLandmarkFile);
@@ -23,6 +38,12 @@ public class TrailManager {
         
     }
     
+    /**
+     * Checks if the given item is contained in the given list.
+     * @param item The item to search for
+     * @param list The list to search in.
+     * @return true if the item is found, false if not.
+     */
     private boolean contains(String item, List<String> list) {
     	for (int i = 0; i < list.size(); i++) {
     		if (list.get(i).equals(item)) {
@@ -32,33 +53,36 @@ public class TrailManager {
     	return false;
     }
     
+    /**
+     * Helper recursive method for getDistancesToDestinations
+     * @param origin the current starting point of a trail.
+     * @param destination The desired location to traverse to.
+     * @param visited The list of locations that have been traversed already
+     * @return int 0 when the location has been found, -1 if the location was not found (on the current path) or the current trail's distance.
+     */
     private int getDistancesHelper(String origin, String destination, List<String> visited) {
     	if (origin.equals(destination)) {
     		return 0;
     	}
     	for (int i = 0; i < trails.size(); i++) {
-    		if (trails.get(i).getLandmarkOne().equals(origin)) {
-    			if (!contains(trails.get(i).getLandmarkTwo(), visited)) {
-    				visited.addFirst(origin);
-    				int result = getDistancesHelper(trails.get(i).getLandmarkTwo(), destination, visited);
-        			if (result == 0) {
-        				return trails.get(i).getLength();
-        			}
-        			else if (result != -1) {
-        				return result + trails.get(i).getLength();
-        			}
+    		if (trails.get(i).getLandmarkOne().equals(origin) && !contains(trails.get(i).getLandmarkTwo(), visited)) {
+    			visited.addFirst(origin);
+    			int result = getDistancesHelper(trails.get(i).getLandmarkTwo(), destination, visited);
+    			if (result == 0) {
+    				return trails.get(i).getLength();
+    			}
+    			else if (result != -1) {
+    				return result + trails.get(i).getLength();
     			}
     		}
-    		if (trails.get(i).getLandmarkTwo().equals(origin)) {
-    			if (!contains(trails.get(i).getLandmarkOne(), visited)) {
-    				visited.addFirst(origin);
-    				int result = getDistancesHelper(trails.get(i).getLandmarkOne(), destination, visited);
-        			if (result == 0) {
-        				return trails.get(i).getLength();
-        			}
-        			else if (result != -1) {
-        				return result + trails.get(i).getLength();
-        			}
+    		if (trails.get(i).getLandmarkTwo().equals(origin) && !contains(trails.get(i).getLandmarkOne(), visited)) {
+    			visited.addFirst(origin);
+    			int result = getDistancesHelper(trails.get(i).getLandmarkOne(), destination, visited);
+    			if (result == 0) {
+    				return trails.get(i).getLength();
+    			}
+    			else if (result != -1) {
+    				return result + trails.get(i).getLength();
     			}
     		}
     	}
@@ -72,10 +96,7 @@ public class TrailManager {
      * @return A map containing a list of landmarks that connect to originlandmark, and their distances.
      */
     public Map<Landmark, Integer> getDistancesToDestinations(String originLandmark) {
-        // TODO: Complete this method
-        // Remember to use DSAFactory to get instances of data structures or sorters that you will need!
-        // For example: DSAFactory.getIndexedList() or DSAFactory.getMap(null)
-        // See the project writeup for more information about using DSAFactory.
+
     	DSAFactory.setMapType(DataStructure.UNORDEREDLINKEDMAP);
     	Map<Landmark, Integer> distances = DSAFactory.getMap(null);
     	
@@ -83,7 +104,6 @@ public class TrailManager {
     	DSAFactory.setListType(DataStructure.SINGLYLINKEDLIST);
     	for (int i = 0; i < landmarks.size(); i++) {
     		List<String> visited = DSAFactory.getIndexedList();
-//    		visited.addFirst(landmarks.get(i).getId());
     		
     		if (!landmarks.get(i).getId().equals(originLandmark)) {
     			int result = getDistancesHelper(originLandmark, landmarks.get(i).getId(), visited);
@@ -96,6 +116,11 @@ public class TrailManager {
     	return distances;
     }
     
+    /**
+     * Finds a landmark in the landmarks list and returns it.
+     * @param landmarkID the ID of the landmark to search for.
+     * @return the landmark in from the list, or null if empty.
+     */
     public Landmark getLandmarkByID(String landmarkID) {
     	Landmark desired = null;
     	//O(n) runtime.
@@ -107,8 +132,41 @@ public class TrailManager {
     	return desired;
     }
     
+    private int firstAidHelper(int numFound, int currentIndex, Landmark current, int minNumTrails, List<Trail> currentTrails) {
+  
+    	int totalFound = numFound;
+    	if (currentIndex >= trails.size()) {
+    		return totalFound;
+    	}
+    	else if (trails.get(currentIndex).getLandmarkOne().equals(current.getId()) || trails.get(currentIndex).getLandmarkTwo().equals(current.getId())) {
+    		totalFound = firstAidHelper(numFound + 1, currentIndex + 1, current, minNumTrails, currentTrails);
+    		if (totalFound >= minNumTrails) {
+    			currentTrails.addLast(trails.get(currentIndex));
+    		}
+    	}
+    	else {
+    		totalFound = firstAidHelper(numFound, currentIndex + 1, current, minNumTrails, currentTrails);
+    	}
+    	return totalFound;
+    }
+    
+    /**
+     * Finds Potential locations for first aid stations based on the minimum number of intersecting trails.
+     * @param numberOfIntersectingTrails the minimum number of intersecting trails required for a first aid station.
+     * @return a map containing Landmarks and List of trails as keys and values respectively. For a Landmark, the list of intersecting trails are listed.
+     */
     public Map<Landmark, List<Trail>> getProposedFirstAidLocations(int numberOfIntersectingTrails) {
-        // TODO: Complete this method
-    	return null;
+        DSAFactory.setMapType(DataStructure.SEARCHTABLE);
+        DSAFactory.setListType(DataStructure.ARRAYBASEDLIST);
+    	Map<Landmark, List<Trail>> firstAidLocations = DSAFactory.getMap(null);
+    	
+    	for (int i = 0; i < landmarks.size(); i++) {
+    		List<Trail> currentTrails = DSAFactory.getIndexedList();
+    		int numFound = firstAidHelper(0, 0, landmarks.get(i), numberOfIntersectingTrails, currentTrails);
+    		if (numFound >= numberOfIntersectingTrails) {
+    			firstAidLocations.put(landmarks.get(i), currentTrails);
+    		}
+    	}
+    	return firstAidLocations;
     }
 }

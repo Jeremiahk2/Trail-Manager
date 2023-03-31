@@ -7,141 +7,155 @@ import java.io.FileNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.ncsu.csc316.dsa.list.List;
 import edu.ncsu.csc316.dsa.map.Map;
 import edu.ncsu.csc316.trail.data.Landmark;
+import edu.ncsu.csc316.trail.data.Trail;
 import edu.ncsu.csc316.trail.dsa.DSAFactory;
 import edu.ncsu.csc316.trail.dsa.DataStructure;
 
+/**
+ * Test class for TrailManager
+ * @author Jeremiah Knizley
+ *
+ */
 public class TrailManagerTest {
 	
+	/**
+	 * TrailManager to be used for testing purposes
+	 */
 	private TrailManager manager;
 	/**
      * Create a new instance of an array-based list before each test case executes
-	 * @throws FileNotFoundException 
+	 * @throws FileNotFoundException  if the file was not found
      */
     @Before
     public void setUp() throws FileNotFoundException {
         manager = new TrailManager("input/landmarks_sample.csv", "input/trails_sample.csv");
     }
+    /**
+     * Tests getDistancesToDestination method
+     */
 	@Test
 	public void testGetDistancesToDestinations() {
 		DSAFactory.setMapType(DataStructure.UNORDEREDLINKEDMAP);
 		Map<Landmark, Integer> map = DSAFactory.getMap(null);
 		
 		map = manager.getDistancesToDestinations("L11");
-		assertTrue(1066 == map.get(manager.getLandmarkByID("L12")));
+		assertEquals((Integer)1066, map.get(manager.getLandmarkByID("L12")));
 		
 		map = manager.getDistancesToDestinations("L12");
-		assertTrue(1066 == map.get(manager.getLandmarkByID("L11")));
+		assertEquals((Integer)1066, map.get(manager.getLandmarkByID("L11")));
 		
 		map = manager.getDistancesToDestinations("L01");
-		assertTrue(3013 == map.get(manager.getLandmarkByID("L02")));
-		assertTrue(6626 == map.get(manager.getLandmarkByID("L10")));
-		assertTrue(1179 == map.get(manager.getLandmarkByID("L04")));
-		assertTrue(3490 == map.get(manager.getLandmarkByID("L09")));
-		assertTrue(1046 == map.get(manager.getLandmarkByID("L03")));
-		assertTrue(5250 == map.get(manager.getLandmarkByID("L05")));
-		assertTrue(6289 == map.get(manager.getLandmarkByID("L06")));
-		assertTrue(9201 == map.get(manager.getLandmarkByID("L07")));
-		assertTrue(11092 == map.get(manager.getLandmarkByID("L08")));
+		assertEquals((Integer)3013, map.get(manager.getLandmarkByID("L02")));
+		assertEquals((Integer)6626, map.get(manager.getLandmarkByID("L10")));
+		assertEquals((Integer)1179, map.get(manager.getLandmarkByID("L04")));
+		assertEquals((Integer)3490, map.get(manager.getLandmarkByID("L09")));
+		assertEquals((Integer)1046, map.get(manager.getLandmarkByID("L03")));
+		assertEquals((Integer)5250, map.get(manager.getLandmarkByID("L05")));
+		assertEquals((Integer)6289, map.get(manager.getLandmarkByID("L06")));
+		assertEquals((Integer)9201, map.get(manager.getLandmarkByID("L07")));
+		assertEquals((Integer)11092, map.get(manager.getLandmarkByID("L08")));
+		assertNull(map.get(manager.getLandmarkByID("L01")));
+		assertNull(map.get(manager.getLandmarkByID("L12")));
 		assertNull(map.get(manager.getLandmarkByID("L01")));
 		
 		map = manager.getDistancesToDestinations("L02");
-		assertTrue(3013 == map.get(manager.getLandmarkByID("L01")));
-		
-		assertTrue(3613 == map.get(manager.getLandmarkByID("L10")));
-		assertTrue(3013 + 1179 == map.get(manager.getLandmarkByID("L04")));
-		assertTrue(3013 + 1179 + 2311 == map.get(manager.getLandmarkByID("L09")));
-		assertTrue(3013 + 1046 == map.get(manager.getLandmarkByID("L03")));
-		assertTrue(3013 + 1046 + 4204 == map.get(manager.getLandmarkByID("L05")));
-		assertTrue(3013 + 1046 + 4204 + 1039 == map.get(manager.getLandmarkByID("L06")));
-		assertTrue(3013 + 1046 + 4204 + 1039 + 2912 == map.get(manager.getLandmarkByID("L07")));
-		assertTrue(3013 + 1046 + 4204 + 1039 + 2912 + 1891 == map.get(manager.getLandmarkByID("L08")));
+		assertEquals((Integer)(3013), map.get(manager.getLandmarkByID("L01")));
+		assertEquals((Integer)(3613), map.get(manager.getLandmarkByID("L10")));
+		assertEquals((Integer)(3013 + 1179), map.get(manager.getLandmarkByID("L04")));
+		assertEquals((Integer)(3013 + 1179 + 2311), map.get(manager.getLandmarkByID("L09")));
+		assertEquals((Integer)(3013 + 1046), map.get(manager.getLandmarkByID("L03")));
+		assertEquals((Integer)(3013 + 1046 + 4204), map.get(manager.getLandmarkByID("L05")));
+		assertEquals((Integer)(3013 + 1046 + 4204 + 1039), map.get(manager.getLandmarkByID("L06")));
+		assertEquals((Integer)(3013 + 1046 + 4204 + 1039 + 2912), map.get(manager.getLandmarkByID("L07")));
+		assertEquals((Integer)(3013 + 1046 + 4204 + 1039 + 2912 + 1891), map.get(manager.getLandmarkByID("L08")));
 		
 		assertNull(map.get(manager.getLandmarkByID("L11")));
 		assertNull(map.get(manager.getLandmarkByID("L12")));
 		assertNull(map.get(manager.getLandmarkByID("L02")));
 		
 		map = manager.getDistancesToDestinations("L03");
-		assertTrue(1046 == map.get(manager.getLandmarkByID("L01")));
-		assertTrue(1046 + 3013 + 3613 == map.get(manager.getLandmarkByID("L10")));
-		assertTrue(1046 + 1179 == map.get(manager.getLandmarkByID("L04")));
-		assertTrue(1046 + 1179 + 2311 == map.get(manager.getLandmarkByID("L09")));
-		assertTrue(1046 + 3013 == map.get(manager.getLandmarkByID("L02")));
-		assertTrue(4204 == map.get(manager.getLandmarkByID("L05")));
-		assertTrue(4204 + 1039 == map.get(manager.getLandmarkByID("L06")));
-		assertTrue(4204 + 1039 + 2912 == map.get(manager.getLandmarkByID("L07")));
-		assertTrue(4204 + 1039 + 2912 + 1891 == map.get(manager.getLandmarkByID("L08")));
+		assertEquals((Integer)(1046), map.get(manager.getLandmarkByID("L01")));
+		assertEquals((Integer)(1046 + 3013 + 3613), map.get(manager.getLandmarkByID("L10")));
+		assertEquals((Integer)(1046 + 1179), map.get(manager.getLandmarkByID("L04")));
+		assertEquals((Integer)(1046 + 1179 + 2311), map.get(manager.getLandmarkByID("L09")));
+		assertEquals((Integer)(1046 + 3013), map.get(manager.getLandmarkByID("L02")));
+		assertEquals((Integer)(4204), map.get(manager.getLandmarkByID("L05")));
+		assertEquals((Integer)(4204 + 1039), map.get(manager.getLandmarkByID("L06")));
+		assertEquals((Integer)(4204 + 1039 + 2912), map.get(manager.getLandmarkByID("L07")));
+		assertEquals((Integer)(4204 + 1039 + 2912 + 1891), map.get(manager.getLandmarkByID("L08")));
 		assertNull(map.get(manager.getLandmarkByID("L11")));
 		assertNull(map.get(manager.getLandmarkByID("L12")));
 		assertNull(map.get(manager.getLandmarkByID("L03")));
 		
 		map = manager.getDistancesToDestinations("L04");
-		assertTrue(2311 == map.get(manager.getLandmarkByID("L09")));
-		assertTrue(1179 == map.get(manager.getLandmarkByID("L01")));
-		assertTrue(1179 + 3013 == map.get(manager.getLandmarkByID("L02")));
-		assertTrue(1179 + 3013 + 3613 == map.get(manager.getLandmarkByID("L10")));
-		assertTrue(1179 + 1046 == map.get(manager.getLandmarkByID("L03")));
-		assertTrue(1179 + 1046 + 4204 == map.get(manager.getLandmarkByID("L05")));
-		assertTrue(1179 + 1046 + 4204 + 1039 == map.get(manager.getLandmarkByID("L06")));
-		assertTrue(1179 + 1046 + 4204 + 1039 + 2912 == map.get(manager.getLandmarkByID("L07")));
-		assertTrue(1179 + 1046 + 4204 + 1039 + 2912 + 1891 == map.get(manager.getLandmarkByID("L08")));
+		assertEquals((Integer)(2311), map.get(manager.getLandmarkByID("L09")));
+		assertEquals((Integer)(1179), map.get(manager.getLandmarkByID("L01")));
+		assertEquals((Integer)(1179 + 3013), map.get(manager.getLandmarkByID("L02")));
+		assertEquals((Integer)(1179 + 3013 + 3613), map.get(manager.getLandmarkByID("L10")));
+		assertEquals((Integer)(1179 + 1046), map.get(manager.getLandmarkByID("L03")));
+		assertEquals((Integer)(1179 + 1046 + 4204), map.get(manager.getLandmarkByID("L05")));
+		assertEquals((Integer)(1179 + 1046 + 4204 + 1039), map.get(manager.getLandmarkByID("L06")));
+		assertEquals((Integer)(1179 + 1046 + 4204 + 1039 + 2912), map.get(manager.getLandmarkByID("L07")));
+		assertEquals((Integer)(1179 + 1046 + 4204 + 1039 + 2912 + 1891), map.get(manager.getLandmarkByID("L08")));
 		assertNull(map.get(manager.getLandmarkByID("L11")));
 		assertNull(map.get(manager.getLandmarkByID("L12")));
 		assertNull(map.get(manager.getLandmarkByID("L04")));
 		
 		map = manager.getDistancesToDestinations("L05");
-		assertTrue(4204 == map.get(manager.getLandmarkByID("L03")));
-		assertTrue(4204 + 1046 == map.get(manager.getLandmarkByID("L01")));
-		assertTrue(4204 + 1046 + 1179 == map.get(manager.getLandmarkByID("L04")));
-		assertTrue(4204 + 1046 + 1179 + 2311 == map.get(manager.getLandmarkByID("L09")));
-		assertTrue(4204 + 1046 + 3013 == map.get(manager.getLandmarkByID("L02")));
-		assertTrue(4204 + 1046 + 3013 + 3613 == map.get(manager.getLandmarkByID("L10")));
-		assertTrue(1039 == map.get(manager.getLandmarkByID("L06")));
-		assertTrue(1039 + 2912 == map.get(manager.getLandmarkByID("L07")));
-		assertTrue(1039 + 2912 + 1891 == map.get(manager.getLandmarkByID("L08")));
+		assertEquals((Integer)(4204), map.get(manager.getLandmarkByID("L03")));
+		assertEquals((Integer)(4204 + 1046), map.get(manager.getLandmarkByID("L01")));
+		assertEquals((Integer)(4204 + 1046 + 1179), map.get(manager.getLandmarkByID("L04")));
+		assertEquals((Integer)(4204 + 1046 + 1179 + 2311), map.get(manager.getLandmarkByID("L09")));
+		assertEquals((Integer)(4204 + 1046 + 3013), map.get(manager.getLandmarkByID("L02")));
+		assertEquals((Integer)(4204 + 1046 + 3013 + 3613), map.get(manager.getLandmarkByID("L10")));
+		assertEquals((Integer)(1039), map.get(manager.getLandmarkByID("L06")));
+		assertEquals((Integer)(1039 + 2912), map.get(manager.getLandmarkByID("L07")));
+		assertEquals((Integer)(1039 + 2912 + 1891), map.get(manager.getLandmarkByID("L08")));
 		assertNull(map.get(manager.getLandmarkByID("L11")));
 		assertNull(map.get(manager.getLandmarkByID("L12")));
 		assertNull(map.get(manager.getLandmarkByID("L05")));
 		
 		map = manager.getDistancesToDestinations("L06");
-		assertTrue(1039 == map.get(manager.getLandmarkByID("L05")));
-		assertTrue(1039 + 4204 == map.get(manager.getLandmarkByID("L03")));
-		assertTrue(1039 + 4204 + 1046 == map.get(manager.getLandmarkByID("L01")));
-		assertTrue(1039 + 4204 + 1046 + 1179 == map.get(manager.getLandmarkByID("L04")));
-		assertTrue(1039 + 4204 + 1046 + 1179 + 2311 == map.get(manager.getLandmarkByID("L09")));
-		assertTrue(1039 + 4204 + 1046 + 3013 == map.get(manager.getLandmarkByID("L02")));
-		assertTrue(1039 + 4204 + 1046 + 3013 + 3613 == map.get(manager.getLandmarkByID("L10")));
-		assertTrue(2912 == map.get(manager.getLandmarkByID("L07")));
-		assertTrue(2912 + 1891 == map.get(manager.getLandmarkByID("L08")));
+		assertEquals((Integer)(1039), map.get(manager.getLandmarkByID("L05")));
+		assertEquals((Integer)(1039 + 4204), map.get(manager.getLandmarkByID("L03")));
+		assertEquals((Integer)(1039 + 4204 + 1046), map.get(manager.getLandmarkByID("L01")));
+		assertEquals((Integer)(1039 + 4204 + 1046 + 1179), map.get(manager.getLandmarkByID("L04")));
+		assertEquals((Integer)(1039 + 4204 + 1046 + 1179 + 2311), map.get(manager.getLandmarkByID("L09")));
+		assertEquals((Integer)(1039 + 4204 + 1046 + 3013), map.get(manager.getLandmarkByID("L02")));
+		assertEquals((Integer)(1039 + 4204 + 1046 + 3013 + 3613), map.get(manager.getLandmarkByID("L10")));
+		assertEquals((Integer)(2912), map.get(manager.getLandmarkByID("L07")));
+		assertEquals((Integer)(2912 + 1891), map.get(manager.getLandmarkByID("L08")));
 		assertNull(map.get(manager.getLandmarkByID("L11")));
 		assertNull(map.get(manager.getLandmarkByID("L12")));
 		assertNull(map.get(manager.getLandmarkByID("L06")));
 		
 		map = manager.getDistancesToDestinations("L07");
-		assertTrue(2912 == map.get(manager.getLandmarkByID("L06")));
-		assertTrue(2912 + 1039 == map.get(manager.getLandmarkByID("L05")));
-		assertTrue(2912 + 1039 + 4204 == map.get(manager.getLandmarkByID("L03")));
-		assertTrue(2912 + 1039 + 4204 + 1046 == map.get(manager.getLandmarkByID("L01")));
-		assertTrue(2912 + 1039 + 4204 + 1046 + 1179 == map.get(manager.getLandmarkByID("L04")));
-		assertTrue(2912 + 1039 + 4204 + 1046 + 1179 + 2311 == map.get(manager.getLandmarkByID("L09")));
-		assertTrue(2912 + 1039 + 4204 + 1046 + 3013 == map.get(manager.getLandmarkByID("L02")));
-		assertTrue(2912 + 1039 + 4204 + 1046 + 3013 + 3613 == map.get(manager.getLandmarkByID("L10")));;
-		assertTrue(1891 == map.get(manager.getLandmarkByID("L08")));
+		assertEquals((Integer)(2912), map.get(manager.getLandmarkByID("L06")));
+		assertEquals((Integer)(2912 + 1039), map.get(manager.getLandmarkByID("L05")));
+		assertEquals((Integer)(2912 + 1039 + 4204), map.get(manager.getLandmarkByID("L03")));
+		assertEquals((Integer)(2912 + 1039 + 4204 + 1046), map.get(manager.getLandmarkByID("L01")));
+		assertEquals((Integer)(2912 + 1039 + 4204 + 1046 + 1179), map.get(manager.getLandmarkByID("L04")));
+		assertEquals((Integer)(2912 + 1039 + 4204 + 1046 + 1179 + 2311), map.get(manager.getLandmarkByID("L09")));
+		assertEquals((Integer)(2912 + 1039 + 4204 + 1046 + 3013), map.get(manager.getLandmarkByID("L02")));
+		assertEquals((Integer)(2912 + 1039 + 4204 + 1046 + 3013 + 3613), map.get(manager.getLandmarkByID("L10")));
+		assertEquals((Integer)(1891), map.get(manager.getLandmarkByID("L08")));
 		assertNull(map.get(manager.getLandmarkByID("L11")));
 		assertNull(map.get(manager.getLandmarkByID("L12")));
 		assertNull(map.get(manager.getLandmarkByID("L07")));
 		
 		map = manager.getDistancesToDestinations("L08");
-		assertTrue(1891 == map.get(manager.getLandmarkByID("L07")));
-		assertTrue(1891 + 2912 == map.get(manager.getLandmarkByID("L06")));
-		assertTrue(1891 + 2912 + 1039 == map.get(manager.getLandmarkByID("L05")));
-		assertTrue(1891 + 2912 + 1039 + 4204 == map.get(manager.getLandmarkByID("L03")));
-		assertTrue(1891 + 2912 + 1039 + 4204 + 1046 == map.get(manager.getLandmarkByID("L01")));
-		assertTrue(1891 + 2912 + 1039 + 4204 + 1046 + 1179 == map.get(manager.getLandmarkByID("L04")));
-		assertTrue(1891 + 2912 + 1039 + 4204 + 1046 + 1179 + 2311 == map.get(manager.getLandmarkByID("L09")));
-		assertTrue(1891 + 2912 + 1039 + 4204 + 1046 + 3013 == map.get(manager.getLandmarkByID("L02")));
-		assertTrue(1891 + 2912 + 1039 + 4204 + 1046 + 3013 + 3613 == map.get(manager.getLandmarkByID("L10")));;
+		assertEquals((Integer)(1891), map.get(manager.getLandmarkByID("L07")));
+		assertEquals((Integer)(1891 + 2912), map.get(manager.getLandmarkByID("L06")));
+		assertEquals((Integer)(1891 + 2912 + 1039), map.get(manager.getLandmarkByID("L05")));
+		assertEquals((Integer)(1891 + 2912 + 1039 + 4204), map.get(manager.getLandmarkByID("L03")));
+		assertEquals((Integer)(1891 + 2912 + 1039 + 4204 + 1046), map.get(manager.getLandmarkByID("L01")));
+		assertEquals((Integer)(1891 + 2912 + 1039 + 4204 + 1046 + 1179), map.get(manager.getLandmarkByID("L04")));
+		assertEquals((Integer)(1891 + 2912 + 1039 + 4204 + 1046 + 1179 + 2311), map.get(manager.getLandmarkByID("L09")));
+		assertEquals((Integer)(1891 + 2912 + 1039 + 4204 + 1046 + 3013), map.get(manager.getLandmarkByID("L02")));
+		assertEquals((Integer)(1891 + 2912 + 1039 + 4204 + 1046 + 3013 + 3613), map.get(manager.getLandmarkByID("L10")));
 		assertNull(map.get(manager.getLandmarkByID("L11")));
 		assertNull(map.get(manager.getLandmarkByID("L12")));
 		assertNull(map.get(manager.getLandmarkByID("L08")));
@@ -153,6 +167,9 @@ public class TrailManagerTest {
 		
 	}
 
+	/**
+	 * Tests getLandmarkById method
+	 */
 	@Test
 	public void testGetLandmarkByID() {
 		Landmark landmark1 = manager.getLandmarkByID("L01");
@@ -206,9 +223,125 @@ public class TrailManagerTest {
 		assertNull(manager.getLandmarkByID("L13"));
 	}
 
+	/**
+	 * Test method for getProposedFirstAidLocations
+	 */
 	@Test
 	public void testGetProposedFirstAidLocations() {
-		fail("Not yet implemented");
+		DSAFactory.setMapType(DataStructure.SEARCHTABLE);
+		Map<Landmark, List<Trail>> map = DSAFactory.getMap(null);
+		
+		//Check locations with four minimum trails.
+		map = manager.getProposedFirstAidLocations(4);
+		assertEquals(0, map.size());
+		
+		//Check locations with three minimum trails.
+		map = manager.getProposedFirstAidLocations(3);
+		assertEquals(1, map.size());
+		List<Trail> trails = map.get(manager.getLandmarkByID("L01"));
+		
+		assertEquals(1179, trails.get(0).getLength());
+		assertEquals(1046, trails.get(1).getLength());
+		assertEquals(3013, trails.get(2).getLength());
+		
+		//Check locations with 2 minimum trails.
+		map = manager.getProposedFirstAidLocations(2);
+		assertEquals(7, map.size());
+		trails = map.get(manager.getLandmarkByID("L01"));
+		assertEquals(3, trails.size());
+		assertEquals(1179, trails.get(0).getLength());
+		assertEquals(1046, trails.get(1).getLength());
+		assertEquals(3013, trails.get(2).getLength());
+		
+		trails = map.get(manager.getLandmarkByID("L02"));
+		assertEquals(2, trails.size());
+		assertEquals(3613, trails.get(0).getLength());
+		assertEquals(3013, trails.get(1).getLength());
+		
+		trails = map.get(manager.getLandmarkByID("L04"));
+		assertEquals(2, trails.size());
+		assertEquals(2311, trails.get(0).getLength());
+		assertEquals(1179, trails.get(1).getLength());
+		
+		trails = map.get(manager.getLandmarkByID("L05"));
+		assertEquals(2, trails.size());
+		assertEquals(1039, trails.get(0).getLength());
+		assertEquals(4204, trails.get(1).getLength());
+		
+		trails = map.get(manager.getLandmarkByID("L07"));
+		assertEquals(2, trails.size());
+		assertEquals(1891, trails.get(0).getLength());
+		assertEquals(2912, trails.get(1).getLength());
+		
+		trails = map.get(manager.getLandmarkByID("L06"));
+		assertEquals(2, trails.size());
+		assertEquals(2912, trails.get(0).getLength());
+		assertEquals(1039, trails.get(1).getLength());
+		
+		trails = map.get(manager.getLandmarkByID("L03"));
+		assertEquals(2, trails.size());
+		assertEquals(4204, trails.get(0).getLength());
+		assertEquals(1046, trails.get(1).getLength());
+		
+		//Check locations with one trail
+		
+		map = manager.getProposedFirstAidLocations(1);
+		assertEquals(12, map.size());
+		trails = map.get(manager.getLandmarkByID("L01"));
+		assertEquals(3, trails.size());
+		assertEquals(1179, trails.get(0).getLength());
+		assertEquals(1046, trails.get(1).getLength());
+		assertEquals(3013, trails.get(2).getLength());
+		
+		trails = map.get(manager.getLandmarkByID("L02"));
+		assertEquals(2, trails.size());
+		assertEquals(3613, trails.get(0).getLength());
+		assertEquals(3013, trails.get(1).getLength());
+		
+		trails = map.get(manager.getLandmarkByID("L04"));
+		assertEquals(2, trails.size());
+		assertEquals(2311, trails.get(0).getLength());
+		assertEquals(1179, trails.get(1).getLength());
+		
+		trails = map.get(manager.getLandmarkByID("L05"));
+		assertEquals(2, trails.size());
+		assertEquals(1039, trails.get(0).getLength());
+		assertEquals(4204, trails.get(1).getLength());
+		
+		trails = map.get(manager.getLandmarkByID("L07"));
+		assertEquals(2, trails.size());
+		assertEquals(1891, trails.get(0).getLength());
+		assertEquals(2912, trails.get(1).getLength());
+		
+		trails = map.get(manager.getLandmarkByID("L06"));
+		assertEquals(2, trails.size());
+		assertEquals(2912, trails.get(0).getLength());
+		assertEquals(1039, trails.get(1).getLength());
+		
+		trails = map.get(manager.getLandmarkByID("L03"));
+		assertEquals(2, trails.size());
+		assertEquals(4204, trails.get(0).getLength());
+		assertEquals(1046, trails.get(1).getLength());
+		
+		trails = map.get(manager.getLandmarkByID("L11"));
+		assertEquals(1, trails.size());
+		assertEquals(1066, trails.get(0).getLength());
+		
+		trails = map.get(manager.getLandmarkByID("L12"));
+		assertEquals(1, trails.size());
+		assertEquals(1066, trails.get(0).getLength());
+		
+		trails = map.get(manager.getLandmarkByID("L10"));
+		assertEquals(1, trails.size());
+		assertEquals(3613, trails.get(0).getLength());
+		
+		trails = map.get(manager.getLandmarkByID("L08"));
+		assertEquals(1, trails.size());
+		assertEquals(1891, trails.get(0).getLength());
+		
+		trails = map.get(manager.getLandmarkByID("L09"));
+		assertEquals(1, trails.size());
+		assertEquals(2311, trails.get(0).getLength());
 	}
 
 }
