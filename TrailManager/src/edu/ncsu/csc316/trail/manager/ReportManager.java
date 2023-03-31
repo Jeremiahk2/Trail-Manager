@@ -1,7 +1,6 @@
 package edu.ncsu.csc316.trail.manager;
 
 import java.io.FileNotFoundException;
-import java.nio.Buffer;
 import java.util.Comparator;
 import java.util.Iterator;
 
@@ -160,10 +159,10 @@ public class ReportManager {
 				return 1;
 			}
 			else {
-				if (((o1.getKey().getDescription()).compareTo(o2.getKey().getDescription()) < 0)) {
+				if (o1.getKey().getDescription().compareTo(o2.getKey().getDescription()) < 0) {
 					return -1;
 				}
-				else if (((o1.getKey().getDescription()).compareTo(o2.getKey().getDescription()) > 0)) {
+				else if (o1.getKey().getDescription().compareTo(o2.getKey().getDescription()) > 0) {
 					return 1;
 				}
 			}

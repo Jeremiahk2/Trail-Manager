@@ -6,9 +6,7 @@ import edu.ncsu.csc316.dsa.list.List;
 import edu.ncsu.csc316.dsa.map.Map;
 import edu.ncsu.csc316.trail.data.Landmark;
 import edu.ncsu.csc316.trail.data.Trail;
-import edu.ncsu.csc316.trail.dsa.Algorithm;
 import edu.ncsu.csc316.trail.dsa.DSAFactory;
-import edu.ncsu.csc316.trail.dsa.DataStructure;
 import edu.ncsu.csc316.trail.io.TrailInputReader;
 
 /**
