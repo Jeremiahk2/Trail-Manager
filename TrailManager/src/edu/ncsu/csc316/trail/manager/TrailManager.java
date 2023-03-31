@@ -157,7 +157,7 @@ public class TrailManager {
     		List<Trail> currentTrails = DSAFactory.getIndexedList();
     		int numFound = firstAidHelper(0, 0, landmarks.get(i), numberOfIntersectingTrails, currentTrails);
     		int count = 1;
-    		if (numFound < 0) {
+    		while (numFound < 0) {
     			numFound = firstAidHelper(numFound * -1 - 1, count * 900, landmarks.get(i), numberOfIntersectingTrails, currentTrails);
     			count++;
     		}
