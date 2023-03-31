@@ -1,0 +1,13 @@
+LANDMARK_ID,DESCRIPTION,TYPE
+L01,Park Entrance,Location
+L02,Entrance Fountain,Fountain
+L03,Waste Station 1,Pet Waste Station
+L04,Entrance Restrooms,Restroom
+L05,Overlook 1,Overlook
+L06,Rock Formation 1,Rock Formation
+L07,Overlook 2,Overlook
+L08,Overlook Restrooms,Restroom
+L09,Waste Station 2,Pet Waste Station
+L10,Hidden Gardens,Gardens
+L11,Campsite 1,Campsite
+L12,Campsite Restrooms,Restroom
