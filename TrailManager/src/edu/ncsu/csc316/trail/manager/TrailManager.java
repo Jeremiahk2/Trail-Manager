@@ -130,6 +130,9 @@ public class TrailManager {
     	if (currentIndex >= trails.size()) {
     		return totalFound;
     	}
+    	if (currentIndex != 0 && currentIndex % 900 == 0) {
+    		return -1 * numFound - 1;
+    	}
     	else if (trails.get(currentIndex).getLandmarkOne().equals(current.getId()) || trails.get(currentIndex).getLandmarkTwo().equals(current.getId())) {
     		totalFound = firstAidHelper(numFound + 1, currentIndex + 1, current, minNumTrails, currentTrails);
     		if (totalFound >= minNumTrails) {
@@ -153,6 +156,11 @@ public class TrailManager {
     	for (int i = 0; i < landmarks.size(); i++) {
     		List<Trail> currentTrails = DSAFactory.getIndexedList();
     		int numFound = firstAidHelper(0, 0, landmarks.get(i), numberOfIntersectingTrails, currentTrails);
+    		int count = 1;
+    		if (numFound < 0) {
+    			numFound = firstAidHelper(numFound * -1 - 1, count * 900, landmarks.get(i), numberOfIntersectingTrails, currentTrails);
+    			count++;
+    		}
     		if (numFound >= numberOfIntersectingTrails) {
     			firstAidLocations.put(landmarks.get(i), currentTrails);
     		}
