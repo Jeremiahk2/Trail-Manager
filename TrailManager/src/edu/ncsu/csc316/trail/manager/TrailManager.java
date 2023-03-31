@@ -35,35 +35,19 @@ public class TrailManager {
     }
     
     /**
-     * Checks if the given item is contained in the given list.
-     * @param item The item to search for
-     * @param list The list to search in.
-     * @return true if the item is found, false if not.
-     */
-    private boolean contains(String item, List<String> list) {
-    	for (int i = 0; i < list.size(); i++) {
-    		if (list.get(i).equals(item)) {
-    			return true;
-    		}
-    	}
-    	return false;
-    }
-    
-    /**
      * Helper recursive method for getDistancesToDestinations
      * @param origin the current starting point of a trail.
      * @param destination The desired location to traverse to.
      * @param visited The list of locations that have been traversed already
      * @return int 0 when the location has been found, -1 if the location was not found (on the current path) or the current trail's distance.
      */
-    private int getDistancesHelper(String origin, String destination, List<String> visited) {
+    private int getDistancesHelper(String origin, String destination, String visited) {
     	if (origin.equals(destination)) {
     		return 0;
     	}
     	for (int i = 0; i < trails.size(); i++) {
-    		if (trails.get(i).getLandmarkOne().equals(origin) && !contains(trails.get(i).getLandmarkTwo(), visited)) {
-    			visited.addFirst(origin);
-    			int result = getDistancesHelper(trails.get(i).getLandmarkTwo(), destination, visited);
+    		if (trails.get(i).getLandmarkOne().equals(origin) && !trails.get(i).getLandmarkTwo().equals(visited)) {
+    			int result = getDistancesHelper(trails.get(i).getLandmarkTwo(), destination, origin);
     			if (result == 0) {
     				return trails.get(i).getLength();
     			}
@@ -71,9 +55,8 @@ public class TrailManager {
     				return result + trails.get(i).getLength();
     			}
     		}
-    		if (trails.get(i).getLandmarkTwo().equals(origin) && !contains(trails.get(i).getLandmarkOne(), visited)) {
-    			visited.addFirst(origin);
-    			int result = getDistancesHelper(trails.get(i).getLandmarkOne(), destination, visited);
+    		if (trails.get(i).getLandmarkTwo().equals(origin) && !trails.get(i).getLandmarkOne().equals(visited)) {
+    			int result = getDistancesHelper(trails.get(i).getLandmarkOne(), destination, origin);
     			if (result == 0) {
     				return trails.get(i).getLength();
     			}
@@ -95,10 +78,9 @@ public class TrailManager {
     	Map<Landmark, Integer> distances = DSAFactory.getMap(null);
     	
     	for (int i = 0; i < landmarks.size(); i++) {
-    		List<String> visited = DSAFactory.getIndexedList();
     		
     		if (!landmarks.get(i).getId().equals(originLandmark)) {
-    			int result = getDistancesHelper(originLandmark, landmarks.get(i).getId(), visited);
+    			int result = getDistancesHelper(originLandmark, landmarks.get(i).getId(), originLandmark);
     			if (result != -1) {
     				distances.put(landmarks.get(i), result);
     			}
@@ -123,27 +105,6 @@ public class TrailManager {
     	}
     	return desired;
     }
-    
-//    private int firstAidHelper(int numFound, int currentIndex, Landmark current, int minNumTrails, List<Trail> currentTrails) {
-//  
-//    	int totalFound = numFound;
-//    	if (currentIndex >= trails.size()) {
-//    		return totalFound;
-//    	}
-//    	if (currentIndex != 0 && currentIndex % 900 == 0) {
-//    		return -1 * numFound - 1;
-//    	}
-//    	else if (trails.get(currentIndex).getLandmarkOne().equals(current.getId()) || trails.get(currentIndex).getLandmarkTwo().equals(current.getId())) {
-//    		totalFound = firstAidHelper(numFound + 1, currentIndex + 1, current, minNumTrails, currentTrails);
-//    		if (totalFound >= minNumTrails) {
-//    			currentTrails.addFirst(trails.get(currentIndex));
-//    		}
-//    	}
-//    	else {
-//    		totalFound = firstAidHelper(numFound, currentIndex + 1, current, minNumTrails, currentTrails);
-//    	}
-//    	return totalFound;
-//    }
     
     /**
      * Finds Potential locations for first aid stations based on the minimum number of intersecting trails.

@@ -114,5 +114,17 @@ public class ReportManagerTest {
 		s = manager.getProposedFirstAidLocations(0);
 		assertEquals(s, "Number of intersecting trails must be greater than 0.");
 	}
-
+	
+//	/**
+//	 * Tests LONG filess
+//	 */
+//	@Test
+//	public void testLONGfirstAid() {
+//		try {
+//			manager = new ReportManager("input/landmarks_large.csv", "input/trails_large.csv");
+//		} catch (FileNotFoundException e) {
+//			fail();
+//		}
+//		String s  = manager.getProposedFirstAidLocations(1);
+//	}
 }
