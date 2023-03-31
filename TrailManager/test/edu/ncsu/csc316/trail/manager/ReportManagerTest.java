@@ -54,7 +54,7 @@ public class ReportManagerTest {
 	public void testGetProposedFirstAidLocations() {
 		String s = manager.getProposedFirstAidLocations(4);
 		
-		assertEquals(s, "No landmarks have at least 4 intersecting trails.\n");
+		assertEquals(s, "No landmarks have at least 4 intersecting trails.");
 		
 		s = manager.getProposedFirstAidLocations(3);
 		
