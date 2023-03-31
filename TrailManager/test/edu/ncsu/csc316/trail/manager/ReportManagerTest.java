@@ -45,6 +45,28 @@ public class ReportManagerTest {
 				+ "   12214 feet (2.31 miles) to Overlook 2 (L07)\n"
 				+ "   14105 feet (2.67 miles) to Overlook Restrooms (L08)\n"
 				+ "}\n");
+		
+		try {
+			manager = new ReportManager("input/landmarks_sample.csv", "input/identical_distances.csv");
+		} catch (FileNotFoundException e) {
+			fail();
+		}
+		String s1 = manager.getDistancesReport("L01");
+		assertEquals(s1, "Landmarks Reachable from Park Entrance (L01) {\n"
+				+ "   3013 feet to Entrance Fountain (L02)\n"
+				+ "   3013 feet to Waste Station 1 (L03)\n"
+				+ "}\n");
+		
+		try {
+			manager = new ReportManager("input/landmarks_sample.csv", "input/identical_distances2.csv");
+		} catch (FileNotFoundException e) {
+			fail();
+		}
+		String s2 = manager.getDistancesReport("L01");
+		assertEquals(s2, "Landmarks Reachable from Park Entrance (L01) {\n"
+//				+ "   3013 feet to Entrance Fountain (L02)\n"
+				+ "   3013 feet to Waste Station 1 (L03)\n"
+				+ "}\n");
 	}
 	
 	/**

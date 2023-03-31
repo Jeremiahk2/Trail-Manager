@@ -42,7 +42,7 @@ public class ReportManager {
         DSAFactory.setListType(DataStructure.ARRAYBASEDLIST); //Array based list will work best with TrailInputReader
         manager = new TrailManager(pathToLandmarkFile, pathToTrailFile);
         DSAFactory.setListType(DataStructure.SINGLYLINKEDLIST); //Singly Linked List has better runtime for finding the first item.
-        DSAFactory.setMapType(DataStructure.SKIPLIST); 
+        DSAFactory.setMapType(DataStructure.UNORDEREDLINKEDMAP); 
         DSAFactory.setComparisonSorterType(Algorithm.MERGESORT);
     }
 
@@ -211,9 +211,7 @@ public class ReportManager {
 				else if (o1.getKey().getDescription().compareTo(o2.getKey().getDescription()) > 0) {
 					return 1;
 				}
-				else {
-					return 0;
-				}
+				return 0;
 			}
 		}
     	
