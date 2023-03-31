@@ -107,7 +107,7 @@ public class ReportManager {
     public String getProposedFirstAidLocations(int numberOfIntersectingTrails) {
     	
     	if (numberOfIntersectingTrails <= 0) {
-    		return "Number of intersecting trails must be greater than 0. ";
+    		return "Number of intersecting trails must be greater than 0.2";
     	}
         Map<Landmark, List<Trail>> locations = manager.getProposedFirstAidLocations(numberOfIntersectingTrails);
         Iterable<Entry<Landmark, List<Trail>>> iterable = locations.entrySet();
