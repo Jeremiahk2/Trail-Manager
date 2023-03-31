@@ -56,16 +56,16 @@ public class ReportManager {
 
         StringBuilder sb = new StringBuilder();
         if (origin == null) {
-        	sb.append("The provided landmark ID ");
+        	sb.append("The provided landmark ID (");
         	sb.append(originLandmark);
-        	sb.append(" is invalid for the park.\n");
+        	sb.append(") is invalid for the park.");
         	return sb.toString();
         }
         Map<Landmark, Integer> distances = manager.getDistancesToDestinations(originLandmark);
         if (distances.size() == 0) {
-        	sb.append("No landmarks are reachable from ");
+        	sb.append("No landmarks are reachable from (");
         	sb.append(originLandmark);
-        	sb.append(".\n");
+        	sb.append(").");
         	return sb.toString();
         }
         Map<Integer, Landmark> reverseDistances = DSAFactory.getMap(null);
@@ -130,7 +130,7 @@ public class ReportManager {
         if (locations.size() == 0) {
         	sb.append("No landmarks have at least ");
         	sb.append(numberOfIntersectingTrails);
-        	sb.append(" intersecting trails.\n");
+        	sb.append(" intersecting trails.");
         	return sb.toString();
         }
         sb.append("Proposed Locations for First Aid Stations {\n");
