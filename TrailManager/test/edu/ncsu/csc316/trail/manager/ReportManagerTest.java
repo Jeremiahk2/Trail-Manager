@@ -89,6 +89,8 @@ public class ReportManagerTest {
 				+ "   Overlook Restrooms (L08) - 1 intersecting trails\n"
 				+ "   Waste Station 2 (L09) - 1 intersecting trails\n"
 				+ "}\n");
+		s = manager.getProposedFirstAidLocations(0);
+		assertEquals(s, "Number of intersecting trails must be greater than 0.");
 	}
 
 }

@@ -52,7 +52,22 @@ public class ReportManager {
      * @return a string that displays the distances to all landmarks (if possible) from the origin
      */
     public String getDistancesReport(String originLandmark) {
+    	Landmark origin = manager.getLandmarkByID(originLandmark);
+
+        StringBuilder sb = new StringBuilder();
+        if (origin == null) {
+        	sb.append("The provided landmark ID ");
+        	sb.append(originLandmark);
+        	sb.append(" is invalid for the park.\n");
+        	return sb.toString();
+        }
         Map<Landmark, Integer> distances = manager.getDistancesToDestinations(originLandmark);
+        if (distances.size() == 0) {
+        	sb.append("No landmarks are reachable from ");
+        	sb.append(originLandmark);
+        	sb.append(".\n");
+        	return sb.toString();
+        }
         Map<Integer, Landmark> reverseDistances = DSAFactory.getMap(null);
         Iterable<Entry<Landmark, Integer>> iterable = distances.entrySet();
         Iterator<Entry<Landmark, Integer>> it = iterable.iterator();
@@ -62,8 +77,7 @@ public class ReportManager {
         	reverseDistances.put(current.getValue(), current.getKey());
         }
         //Build header
-        Landmark origin = manager.getLandmarkByID(originLandmark);
-        StringBuilder sb = new StringBuilder();
+        
         sb.append("Landmarks Reachable from ");
         sb.append(origin.getDescription());
         sb.append(" ");
