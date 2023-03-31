@@ -124,26 +124,26 @@ public class TrailManager {
     	return desired;
     }
     
-    private int firstAidHelper(int numFound, int currentIndex, Landmark current, int minNumTrails, List<Trail> currentTrails) {
-  
-    	int totalFound = numFound;
-    	if (currentIndex >= trails.size()) {
-    		return totalFound;
-    	}
-    	if (currentIndex != 0 && currentIndex % 900 == 0) {
-    		return -1 * numFound - 1;
-    	}
-    	else if (trails.get(currentIndex).getLandmarkOne().equals(current.getId()) || trails.get(currentIndex).getLandmarkTwo().equals(current.getId())) {
-    		totalFound = firstAidHelper(numFound + 1, currentIndex + 1, current, minNumTrails, currentTrails);
-    		if (totalFound >= minNumTrails) {
-    			currentTrails.addFirst(trails.get(currentIndex));
-    		}
-    	}
-    	else {
-    		totalFound = firstAidHelper(numFound, currentIndex + 1, current, minNumTrails, currentTrails);
-    	}
-    	return totalFound;
-    }
+//    private int firstAidHelper(int numFound, int currentIndex, Landmark current, int minNumTrails, List<Trail> currentTrails) {
+//  
+//    	int totalFound = numFound;
+//    	if (currentIndex >= trails.size()) {
+//    		return totalFound;
+//    	}
+//    	if (currentIndex != 0 && currentIndex % 900 == 0) {
+//    		return -1 * numFound - 1;
+//    	}
+//    	else if (trails.get(currentIndex).getLandmarkOne().equals(current.getId()) || trails.get(currentIndex).getLandmarkTwo().equals(current.getId())) {
+//    		totalFound = firstAidHelper(numFound + 1, currentIndex + 1, current, minNumTrails, currentTrails);
+//    		if (totalFound >= minNumTrails) {
+//    			currentTrails.addFirst(trails.get(currentIndex));
+//    		}
+//    	}
+//    	else {
+//    		totalFound = firstAidHelper(numFound, currentIndex + 1, current, minNumTrails, currentTrails);
+//    	}
+//    	return totalFound;
+//    }
     
     /**
      * Finds Potential locations for first aid stations based on the minimum number of intersecting trails.
@@ -155,11 +155,12 @@ public class TrailManager {
     	
     	for (int i = 0; i < landmarks.size(); i++) {
     		List<Trail> currentTrails = DSAFactory.getIndexedList();
-    		int numFound = firstAidHelper(0, 0, landmarks.get(i), numberOfIntersectingTrails, currentTrails);
-    		int count = 1;
-    		while (numFound < 0) {
-    			numFound = firstAidHelper(numFound * -1 - 1, count * 900, landmarks.get(i), numberOfIntersectingTrails, currentTrails);
-    			count++;
+    		int numFound = 0;
+    		for (int j = 0; j < trails.size(); j++) {
+    			if (trails.get(j).getLandmarkOne().equals(landmarks.get(i).getId()) || trails.get(j).getLandmarkTwo().equals(landmarks.get(i).getId())) {
+    				numFound++;
+    				currentTrails.addLast(trails.get(j));
+    			}
     		}
     		if (numFound >= numberOfIntersectingTrails) {
     			firstAidLocations.put(landmarks.get(i), currentTrails);
