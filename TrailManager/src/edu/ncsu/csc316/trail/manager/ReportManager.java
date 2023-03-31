@@ -105,14 +105,14 @@ public class ReportManager {
      * @return a string containing information about possible first aid locations
      */
     public String getProposedFirstAidLocations(int numberOfIntersectingTrails) {
-    	
+    	StringBuilder sb = new StringBuilder();
     	if (numberOfIntersectingTrails <= 0) {
-    		return "Number of intersecting trails must be greater than 0.2";
+    		sb.append("Number of intersecting trails must be greater than 0.");
+    		return sb.toString();
     	}
         Map<Landmark, List<Trail>> locations = manager.getProposedFirstAidLocations(numberOfIntersectingTrails);
         Iterable<Entry<Landmark, List<Trail>>> iterable = locations.entrySet();
         Iterator<Entry<Landmark, List<Trail>>> it = iterable.iterator();
-        StringBuilder sb = new StringBuilder();
         if (locations.size() == 0) {
         	sb.append("No landmarks have at least ");
         	sb.append(numberOfIntersectingTrails);
