@@ -63,7 +63,9 @@ public class ReportManager {
         }
         Map<Landmark, Integer> distances = manager.getDistancesToDestinations(originLandmark);
         if (distances.size() == 0) {
-        	sb.append("No landmarks are reachable from (");
+        	sb.append("No landmarks are reachable from ");
+        	sb.append(origin.getDescription());
+        	sb.append(" (");
         	sb.append(originLandmark);
         	sb.append(").");
         	return sb.toString();
