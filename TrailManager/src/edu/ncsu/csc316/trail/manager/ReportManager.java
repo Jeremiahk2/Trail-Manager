@@ -70,16 +70,18 @@ public class ReportManager {
         	sb.append(").");
         	return sb.toString();
         }
-        Map<Integer, Landmark> reverseDistances = DSAFactory.getMap(null);
+        //Sort the map into an array of elements
+        Sorter<Entry<Landmark, Integer>> sorter = DSAFactory.getComparisonSorter(new DistancesOrder());
         Iterable<Entry<Landmark, Integer>> iterable = distances.entrySet();
         Iterator<Entry<Landmark, Integer>> it = iterable.iterator();
-        
-        while (it.hasNext()) {
-        	Entry<Landmark, Integer> current = it.next();
-        	reverseDistances.put(current.getValue(), current.getKey());
+        @SuppressWarnings("unchecked")
+        Entry<Landmark, Integer>[] elements = new Entry[distances.size()];
+        for (int i = 0; i < distances.size(); i++) {
+        	elements[i] = it.next(); 
         }
+        sorter.sort(elements);
+
         //Build header
-        
         sb.append("Landmarks Reachable from ");
         sb.append(origin.getDescription());
         sb.append(" ");
@@ -87,15 +89,13 @@ public class ReportManager {
         sb.append(origin.getId());
         sb.append(") {\n");
         //Build inner text
-        Iterable<Entry<Integer, Landmark>> stringIterable = reverseDistances.entrySet();
-        Iterator<Entry<Integer, Landmark>> stringIt = stringIterable.iterator();
-        while (stringIt.hasNext()) {
-        	Entry<Integer, Landmark> current = stringIt.next();
+        for (int i = 0; i < distances.size(); i++) {
+        	Entry<Landmark, Integer> current = elements[i];
         	sb.append("   ");
-        	sb.append(current.getKey());
+        	sb.append(current.getValue());
         	sb.append(" feet ");
-        	if (current.getKey() > 5280) {
-        		double miles = (double)current.getKey() / 5280.0;
+        	if (current.getValue() > 5280) {
+        		double miles = (double)current.getValue() / 5280.0;
         		miles = miles * 100;
         		miles = Math.round(miles);
         		miles = miles / 100;
@@ -106,9 +106,9 @@ public class ReportManager {
         	else {
         		sb.append("to ");
         	}
-        	sb.append(current.getValue().getDescription());
+        	sb.append(current.getKey().getDescription());
         	sb.append(" (");
-        	sb.append(current.getValue().getId());
+        	sb.append(current.getKey().getId());
         	sb.append(")\n");
         }
         sb.append("}\n");
@@ -188,6 +188,35 @@ public class ReportManager {
 			}
 			return 0;
 		}
+    }
+    /**
+     * Comparator for comparing Distance Entries
+     * @author Jeremiah Knizley
+     *
+     */
+    private class DistancesOrder implements Comparator<Entry<Landmark, Integer>> {
+
+		@Override
+		public int compare(Entry<Landmark, Integer> o1, Entry<Landmark, Integer> o2) {
+			if (o1.getValue() > o2.getValue()) {
+				return 1;
+			}
+			else if (o1.getValue() < o2.getValue()) {
+				return -1;
+			}
+			else {
+				if (o1.getKey().getDescription().compareTo(o2.getKey().getDescription()) < 0 ) {
+					return -1;
+				}
+				else if (o1.getKey().getDescription().compareTo(o2.getKey().getDescription()) > 0) {
+					return 1;
+				}
+				else {
+					return 0;
+				}
+			}
+		}
+    	
     }
     
 }
