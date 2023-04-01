@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"edu.ncsu.csc316.trail.ui","l":"ManagerUI"},{"p":"edu.ncsu.csc316.trail.manager","l":"ReportManager"},{"p":"edu.ncsu.csc316.trail.manager","l":"TrailManager"}];updateSearchResults();
