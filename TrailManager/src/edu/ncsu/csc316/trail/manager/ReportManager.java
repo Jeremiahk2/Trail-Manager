@@ -40,7 +40,7 @@ public class ReportManager {
         // See the project writeup for more information about using DSAFactory.
         // This is the ONLY place you will need to call these DSAFactory setter methods!
         DSAFactory.setListType(DataStructure.ARRAYBASEDLIST); //Array based list will work best with TrailInputReader
-        DSAFactory.setMapType(DataStructure.SEARCHTABLE);
+        DSAFactory.setMapType(DataStructure.SKIPLIST);
         DSAFactory.setComparisonSorterType(Algorithm.MERGESORT);
         manager = new TrailManager(pathToLandmarkFile, pathToTrailFile);
     }
@@ -158,7 +158,7 @@ public class ReportManager {
     }
     
     /**
-     * Comparator for comparing FirstAid Entries
+     * Comparator for comparing FirstAid Entries. They are compared by number of intersecting trails, and then by their description.
      * @author Jeremiah Knizley
      *
      */
@@ -190,6 +190,7 @@ public class ReportManager {
     }
     /**
      * Comparator for comparing Distance Entries
+     * They are compared by their distance, and then by their descriptions
      * @author Jeremiah Knizley
      *
      */

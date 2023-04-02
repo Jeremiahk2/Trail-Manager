@@ -44,62 +44,6 @@ public class TrailManager {
         
     }
     
-//    /**
-//     * Helper recursive method for getDistancesToDestinations
-//     * @param origin the current starting point of a trail.
-//     * @param destination The desired location to traverse to.
-//     * @param visited The list of locations that have been traversed already
-//     * @return int 0 when the location has been found, -1 if the location was not found (on the current path) or the current trail's distance.
-//     */
-//    private int getDistancesHelper(String origin, String destination, String visited) {
-//    	if (origin.equals(destination)) {
-//    		return 0;
-//    	}
-//    	for (int i = 0; i < trails.size(); i++) {
-//    		if (trails.get(i).getLandmarkOne().equals(origin) && !trails.get(i).getLandmarkTwo().equals(visited)) {
-//    			int result = getDistancesHelper(trails.get(i).getLandmarkTwo(), destination, origin);
-//    			if (result == 0) {
-//    				return trails.get(i).getLength();
-//    			}
-//    			else if (result != -1) {
-//    				return result + trails.get(i).getLength();
-//    			}
-//    		}
-//    		if (trails.get(i).getLandmarkTwo().equals(origin) && !trails.get(i).getLandmarkOne().equals(visited)) {
-//    			int result = getDistancesHelper(trails.get(i).getLandmarkOne(), destination, origin);
-//    			if (result == 0) {
-//    				return trails.get(i).getLength();
-//    			}
-//    			else if (result != -1) {
-//    				return result + trails.get(i).getLength();
-//    			}
-//    		}
-//    	}
-//    	return -1;
-//    }
-//    
-//    /** 
-//     * Returns a map to different landmarks from an originLandmark.
-//     * Only trails that connect to a landmark are included in the map that is returned.
-//     * @param originLandmark the landmark to calculate distances from
-//     * @return A map containing a list of landmarks that connect to originlandmark, and their distances.
-//     */
-//    public Map<Landmark, Integer> getDistancesToDestinations(String originLandmark) {
-//    	Map<Landmark, Integer> distances = DSAFactory.getMap(null);
-//    	
-//    	for (int i = 0; i < landmarks.size(); i++) {
-//    		
-//    		if (!landmarks.get(i).getId().equals(originLandmark)) {
-//    			int result = getDistancesHelper(originLandmark, landmarks.get(i).getId(), originLandmark);
-//    			if (result != -1) {
-//    				distances.put(landmarks.get(i), result);
-//    			}
-//    			
-//    		}
-//    	}
-//    	return distances;
-//    }
-    
     
     /**
    * Helper recursive method for getDistancesToDestinations

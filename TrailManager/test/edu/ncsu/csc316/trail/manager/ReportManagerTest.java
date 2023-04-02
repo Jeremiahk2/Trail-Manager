@@ -57,17 +57,6 @@ public class ReportManagerTest {
 				+ "   3013 feet to Entrance Fountain (L02)\n"
 				+ "   3013 feet to Waste Station 1 (L03)\n"
 				+ "}\n");
-		
-//		try {
-//			manager = new ReportManager("input/landmarks_sample.csv", "input/identical_distances2.csv");
-//		} catch (FileNotFoundException e) {
-//			fail();
-//		}
-//		String s2 = manager.getDistancesReport("L01");
-//		assertEquals(s2, "Landmarks Reachable from Park Entrance (L01) {\n"
-////				+ "   3013 feet to Entrance Fountain (L02)\n"
-//				+ "   3013 feet to Waste Station 1 (L03)\n"
-//				+ "}\n");
 	}
 	
 	/**
@@ -115,7 +104,4 @@ public class ReportManagerTest {
 		s = manager.getProposedFirstAidLocations(0);
 		assertEquals(s, "Number of intersecting trails must be greater than 0.");
 	}
-	
-	//Statistics so far:
-		//Array Based List works faster for reading files than LinkedList does
 }

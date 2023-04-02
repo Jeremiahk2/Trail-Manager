@@ -231,7 +231,6 @@ public class TrailManagerTest {
 	 */
 	@Test
 	public void testGetProposedFirstAidLocations() {
-		DSAFactory.setMapType(DataStructure.SEARCHTABLE);
 		Map<Landmark, List<Trail>> map = DSAFactory.getMap(null);
 		
 		//Check locations with four minimum trails.
