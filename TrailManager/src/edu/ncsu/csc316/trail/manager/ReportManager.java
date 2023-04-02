@@ -40,10 +40,9 @@ public class ReportManager {
         // See the project writeup for more information about using DSAFactory.
         // This is the ONLY place you will need to call these DSAFactory setter methods!
         DSAFactory.setListType(DataStructure.ARRAYBASEDLIST); //Array based list will work best with TrailInputReader
-        manager = new TrailManager(pathToLandmarkFile, pathToTrailFile);
-//        DSAFactory.setListType(DataStructure.ARRAYBASEDLIST); //Singly Linked List has better runtime for finding the first item.
-        DSAFactory.setMapType(DataStructure.UNORDEREDLINKEDMAP); 
+        DSAFactory.setMapType(DataStructure.SEARCHTABLE);
         DSAFactory.setComparisonSorterType(Algorithm.MERGESORT);
+        manager = new TrailManager(pathToLandmarkFile, pathToTrailFile);
     }
 
     /**
@@ -208,10 +207,7 @@ public class ReportManager {
 				if (o1.getKey().getDescription().compareTo(o2.getKey().getDescription()) < 0 ) {
 					return -1;
 				}
-				else if (o1.getKey().getDescription().compareTo(o2.getKey().getDescription()) > 0) {
-					return 1;
-				}
-				return 0;
+				return o1.getKey().getDescription().compareTo(o2.getKey().getDescription()) > 0 ? 1 : 0;
 			}
 		}
     	

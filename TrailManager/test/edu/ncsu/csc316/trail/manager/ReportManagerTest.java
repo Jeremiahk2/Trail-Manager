@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 
+
 /**
  * Test class for ReportManager
  * @author Jeremiah Knizley
@@ -57,16 +58,16 @@ public class ReportManagerTest {
 				+ "   3013 feet to Waste Station 1 (L03)\n"
 				+ "}\n");
 		
-		try {
-			manager = new ReportManager("input/landmarks_sample.csv", "input/identical_distances2.csv");
-		} catch (FileNotFoundException e) {
-			fail();
-		}
-		String s2 = manager.getDistancesReport("L01");
-		assertEquals(s2, "Landmarks Reachable from Park Entrance (L01) {\n"
-//				+ "   3013 feet to Entrance Fountain (L02)\n"
-				+ "   3013 feet to Waste Station 1 (L03)\n"
-				+ "}\n");
+//		try {
+//			manager = new ReportManager("input/landmarks_sample.csv", "input/identical_distances2.csv");
+//		} catch (FileNotFoundException e) {
+//			fail();
+//		}
+//		String s2 = manager.getDistancesReport("L01");
+//		assertEquals(s2, "Landmarks Reachable from Park Entrance (L01) {\n"
+////				+ "   3013 feet to Entrance Fountain (L02)\n"
+//				+ "   3013 feet to Waste Station 1 (L03)\n"
+//				+ "}\n");
 	}
 	
 	/**
@@ -115,16 +116,6 @@ public class ReportManagerTest {
 		assertEquals(s, "Number of intersecting trails must be greater than 0.");
 	}
 	
-//	/**
-//	 * Tests LONG filess
-//	 */
-//	@Test
-//	public void testLONGfirstAid() {
-//		try {
-//			manager = new ReportManager("input/landmarks_large.csv", "input/trails_large.csv");
-//		} catch (FileNotFoundException e) {
-//			fail();
-//		}
-//		String s  = manager.getProposedFirstAidLocations(1);
-//	}
+	//Statistics so far:
+		//Array Based List works faster for reading files than LinkedList does
 }

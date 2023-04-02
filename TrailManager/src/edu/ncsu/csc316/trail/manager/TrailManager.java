@@ -20,6 +20,11 @@ public class TrailManager {
     private List<Trail> trails;
     /** A list of landmarks in the system */
     private List<Landmark> landmarks;
+    /**
+     * Search table for landmarks. Should make olog(n) searches for landmarks possible.
+     */
+    private Map<String, Landmark> landmarksMap;
+    
     
     /**
      * Creates a TrailManager. trails are initialized to an ArrayBasedList
@@ -31,64 +36,133 @@ public class TrailManager {
     public TrailManager(String pathToLandmarkFile, String pathToTrailFile) throws FileNotFoundException {
         landmarks = TrailInputReader.readLandmarks(pathToLandmarkFile);
         trails = TrailInputReader.readTrails(pathToTrailFile); 
+        //Putting these in a Search table will guarantee O(logn) traversal later, for the the cost of nlog(n) traversal here.
+        landmarksMap = DSAFactory.getMap(null);
+        for (int i = 0; i < landmarks.size(); i++) {
+        	landmarksMap.put(landmarks.get(i).getId(), landmarks.get(i));
+        }
         
     }
     
+//    /**
+//     * Helper recursive method for getDistancesToDestinations
+//     * @param origin the current starting point of a trail.
+//     * @param destination The desired location to traverse to.
+//     * @param visited The list of locations that have been traversed already
+//     * @return int 0 when the location has been found, -1 if the location was not found (on the current path) or the current trail's distance.
+//     */
+//    private int getDistancesHelper(String origin, String destination, String visited) {
+//    	if (origin.equals(destination)) {
+//    		return 0;
+//    	}
+//    	for (int i = 0; i < trails.size(); i++) {
+//    		if (trails.get(i).getLandmarkOne().equals(origin) && !trails.get(i).getLandmarkTwo().equals(visited)) {
+//    			int result = getDistancesHelper(trails.get(i).getLandmarkTwo(), destination, origin);
+//    			if (result == 0) {
+//    				return trails.get(i).getLength();
+//    			}
+//    			else if (result != -1) {
+//    				return result + trails.get(i).getLength();
+//    			}
+//    		}
+//    		if (trails.get(i).getLandmarkTwo().equals(origin) && !trails.get(i).getLandmarkOne().equals(visited)) {
+//    			int result = getDistancesHelper(trails.get(i).getLandmarkOne(), destination, origin);
+//    			if (result == 0) {
+//    				return trails.get(i).getLength();
+//    			}
+//    			else if (result != -1) {
+//    				return result + trails.get(i).getLength();
+//    			}
+//    		}
+//    	}
+//    	return -1;
+//    }
+//    
+//    /** 
+//     * Returns a map to different landmarks from an originLandmark.
+//     * Only trails that connect to a landmark are included in the map that is returned.
+//     * @param originLandmark the landmark to calculate distances from
+//     * @return A map containing a list of landmarks that connect to originlandmark, and their distances.
+//     */
+//    public Map<Landmark, Integer> getDistancesToDestinations(String originLandmark) {
+//    	Map<Landmark, Integer> distances = DSAFactory.getMap(null);
+//    	
+//    	for (int i = 0; i < landmarks.size(); i++) {
+//    		
+//    		if (!landmarks.get(i).getId().equals(originLandmark)) {
+//    			int result = getDistancesHelper(originLandmark, landmarks.get(i).getId(), originLandmark);
+//    			if (result != -1) {
+//    				distances.put(landmarks.get(i), result);
+//    			}
+//    			
+//    		}
+//    	}
+//    	return distances;
+//    }
+    
+    
     /**
-     * Helper recursive method for getDistancesToDestinations
-     * @param origin the current starting point of a trail.
-     * @param destination The desired location to traverse to.
-     * @param visited The list of locations that have been traversed already
-     * @return int 0 when the location has been found, -1 if the location was not found (on the current path) or the current trail's distance.
-     */
-    private int getDistancesHelper(String origin, String destination, String visited) {
-    	if (origin.equals(destination)) {
-    		return 0;
-    	}
-    	for (int i = 0; i < trails.size(); i++) {
-    		if (trails.get(i).getLandmarkOne().equals(origin) && !trails.get(i).getLandmarkTwo().equals(visited)) {
-    			int result = getDistancesHelper(trails.get(i).getLandmarkTwo(), destination, origin);
-    			if (result == 0) {
-    				return trails.get(i).getLength();
-    			}
-    			else if (result != -1) {
-    				return result + trails.get(i).getLength();
-    			}
-    		}
-    		if (trails.get(i).getLandmarkTwo().equals(origin) && !trails.get(i).getLandmarkOne().equals(visited)) {
-    			int result = getDistancesHelper(trails.get(i).getLandmarkOne(), destination, origin);
-    			if (result == 0) {
-    				return trails.get(i).getLength();
-    			}
-    			else if (result != -1) {
-    				return result + trails.get(i).getLength();
-    			}
-    		}
-    	}
-    	return -1;
-    }
+   * Helper recursive method for getDistancesToDestinations
+   * @param origin the current starting point of a trail.
+   * @param totalDistance The desired location to traverse to.
+   * @param distances The list of locations that have been traversed already
+   * @param trail the current trail we are one
+   * @param tempTrails the temporary list of trails we are using to traverse
+   */
+  private void getDistancesHelper(Map<Landmark, Integer> distances, Trail trail, String origin, int totalDistance, List<Trail> tempTrails) {
+	  for (int i = 0; i < tempTrails.size(); i++) {
+		  if (tempTrails.get(i).getLandmarkOne().equals(origin) || tempTrails.get(i).getLandmarkTwo().equals(origin)) {
+				Trail current = tempTrails.get(i);
+				tempTrails.remove(i);
+				if (current.getLandmarkOne().equals(origin)) {
+					distances.put(getLandmarkByID(current.getLandmarkTwo()), totalDistance + current.getLength());
+					getDistancesHelper(distances, current, current.getLandmarkTwo(), totalDistance + current.getLength(), tempTrails);
+				}
+				
+				else if (current.getLandmarkTwo().equals(origin)) {
+					distances.put(getLandmarkByID(current.getLandmarkOne()), totalDistance + current.getLength());
+					getDistancesHelper(distances, current, current.getLandmarkOne(), totalDistance + current.getLength(), tempTrails);
+				}
+				i = -1;
+			}
+		}
+	  
+  }
     
     /** 
-     * Returns a map to different landmarks from an originLandmark.
-     * Only trails that connect to a landmark are included in the map that is returned.
-     * @param originLandmark the landmark to calculate distances from
-     * @return A map containing a list of landmarks that connect to originlandmark, and their distances.
-     */
-    public Map<Landmark, Integer> getDistancesToDestinations(String originLandmark) {
-    	Map<Landmark, Integer> distances = DSAFactory.getMap(null);
-    	
-    	for (int i = 0; i < landmarks.size(); i++) {
-    		
-    		if (!landmarks.get(i).getId().equals(originLandmark)) {
-    			int result = getDistancesHelper(originLandmark, landmarks.get(i).getId(), originLandmark);
-    			if (result != -1) {
-    				distances.put(landmarks.get(i), result);
-    			}
-    			
-    		}
-    	}
-    	return distances;
-    }
+   * Returns a map to different landmarks from an originLandmark.
+   * Only trails that connect to a landmark are included in the map that is returned.
+   * @param originLandmark the landmark to calculate distances from
+   * @return A map containing a list of landmarks that connect to originlandmark, and their distances.
+   */
+  public Map<Landmark, Integer> getDistancesToDestinations(String originLandmark) {
+  	Map<Landmark, Integer> distances = DSAFactory.getMap(null);
+  	
+  	//Copy trails to disposable array
+  	List<Trail> tempTrails = DSAFactory.getIndexedList();
+  	for (int i = trails.size() - 1; i >= 0; i--) {
+  		tempTrails.addLast(trails.get(i));
+  	}
+  	//O(n) traversal of trails.
+  	for (int i = 0; i < tempTrails.size(); i++) {
+		if (tempTrails.get(i).getLandmarkOne().equals(originLandmark) || tempTrails.get(i).getLandmarkTwo().equals(originLandmark)) {
+			Trail current = tempTrails.get(i);
+			tempTrails.remove(i);
+			if (current.getLandmarkOne().equals(originLandmark)) {
+				distances.put(getLandmarkByID(current.getLandmarkTwo()), current.getLength());
+				getDistancesHelper(distances, current, current.getLandmarkTwo(), current.getLength(), tempTrails);
+			}
+			
+			else if (current.getLandmarkTwo().equals(originLandmark)) {
+				distances.put(getLandmarkByID(current.getLandmarkOne()), current.getLength());
+				getDistancesHelper(distances, current, current.getLandmarkOne(), current.getLength(), tempTrails);
+			}
+			i = -1;
+		}
+	}
+  	return distances;
+  	
+  }
     
     /**
      * Finds a landmark in the landmarks list and returns it.
@@ -96,14 +170,7 @@ public class TrailManager {
      * @return the landmark in from the list, or null if empty.
      */
     public Landmark getLandmarkByID(String landmarkID) {
-    	Landmark desired = null;
-    	//O(n) runtime.
-    	for (int i = 0; i < landmarks.size(); i++) {
-    		if (landmarks.get(i).getId().equals(landmarkID)) {
-    			desired = landmarks.get(i);
-    		}
-    	}
-    	return desired;
+    	return landmarksMap.get(landmarkID);
     }
     
     /**

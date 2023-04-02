@@ -33,17 +33,15 @@ public class TrailManagerTest {
     @Before
     public void setUp() throws FileNotFoundException {
     	DSAFactory.setListType(DataStructure.ARRAYBASEDLIST);
+    	DSAFactory.setMapType(DataStructure.SEARCHTABLE); 
+    	DSAFactory.setNonComparisonSorterType(Algorithm.MERGESORT);
         manager = new TrailManager("input/landmarks_sample.csv", "input/trails_sample.csv");
-        DSAFactory.setListType(DataStructure.SINGLYLINKEDLIST);
-        DSAFactory.setMapType(DataStructure.SEARCHTABLE); 
-        DSAFactory.setNonComparisonSorterType(Algorithm.RADIX_SORT);
     }
     /**
      * Tests getDistancesToDestination method
      */
 	@Test
 	public void testGetDistancesToDestinations() {
-		DSAFactory.setMapType(DataStructure.UNORDEREDLINKEDMAP);
 		Map<Landmark, Integer> map = DSAFactory.getMap(null);
 		
 		map = manager.getDistancesToDestinations("L11");
